@@ -10,7 +10,7 @@ import bokeh.io as bio
 import bokeh.models as bm
 import bokeh.plotting as bp
 import geopandas as gpd
-import bokeh.palettes
+import colorcet
 
 year_from = 1990
 year_to = 2021
@@ -132,10 +132,13 @@ world_region["x"] = c.x
 world_region["y"] = c.y
 
 coord_fixes = {
-    "RUS": (45, 60),
+    "RUS": (35, 60),
     "FRA": (2, 46),
     "GBR": (-1, 52),
     "FIN": (26, 62),
+    "NOR": (10, 60),
+    "PRT": (-7, 38),
+    "ITA": (10, 45),
 }
 
 for c_id, coord in coord_fixes.items():
@@ -147,9 +150,12 @@ if region_name:
     world_region = world_region.loc[world_region['continent'] == region_name]
 
 plot_df = bm.GeoJSONDataSource(geojson=world_region.to_json())
-p = bp.figure(title=value_to_draw, x_range=(-30, 60), y_range=(30, 85))
-map_palette = bokeh.palettes.Inferno256
-color_mapper = bm.LinearColorMapper(palette=map_palette)
+p = bp.figure(
+    title=value_to_draw, x_range=(-22, 40), y_range=(35, 72))
+map_palette = colorcet.bkr
+
+m = 20
+color_mapper = bm.LinearColorMapper(palette=map_palette, low=-m, high=m)
 p.patches(
     'xs', 'ys',
     fill_alpha=1.0,
@@ -176,4 +182,7 @@ labels = bm.LabelSet(
 p.add_layout(labels)
 bio.show(p)
 
-bio.export_png(p, filename="{}.png".format(value_to_draw))
+try:
+    bio.export_png(p, filename="{}.png".format(value_to_draw))
+except:
+    pass

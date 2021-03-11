@@ -3,3 +3,5 @@ geopandas
 numpy
 pandas
 wbdata
+selenium
+colorcet
