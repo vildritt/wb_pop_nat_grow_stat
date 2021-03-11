@@ -1,0 +1,5 @@
+.idea/
+stat.html
+data.gz
+__pycache__
+*.cache
